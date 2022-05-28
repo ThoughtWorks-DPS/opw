@@ -14,10 +14,10 @@ import (
 var vaultName = os.Getenv("OP_CONNECT_VAULT")
 var vaultId = getVaultId()
 var client = createClient()
-var singleline bool 
+var singleline bool
 
 var writeCmd = &cobra.Command{
-	Use:               "write",
+	Use:               "write ITEM_NAME FIELD_NAME [VALUE|-]",
 	Short:             "write secret to 1password connect server",
 	Long:              `write secret to 1password connect server`,
 	DisableAutoGenTag: true,
@@ -33,25 +33,31 @@ func init() {
 	rootCmd.AddCommand(writeCmd)
 }
 
-
 func writeSecret(item_name string, field_name string, key_value string) {
 	if key_value == "-" {
 		key_value = fetchPipe()
 	}
 
 	// check if item already exists?
-	item := findItemField(item_name, field_name)
+	item, _ := client.GetItemByTitle(item_name, vaultId)
 
 	//if item already exists, this is an update
 	if item != nil {
+		var field_exists = false
 		for _, field := range item.Fields {
 			if field.Label == field_name {
+				// the field exists, update it
 				field.Value = key_value
+				field_exists = true
 			}
+		}
+		if !field_exists {
+			// this is a new field, add it
+			item.Fields = append(item.Fields, &onepassword.ItemField{Label: field_name, Value: key_value})
 		}
 		updatedItem, err := client.UpdateItem(item, vaultId)
 		exitOnError(err)
-		fmt.Println("op_write: updated " + updatedItem.Title)
+		fmt.Println("opw: updated " + updatedItem.Title)
 
 	// if item does not exist then create it
 	} else {
@@ -66,9 +72,8 @@ func writeSecret(item_name string, field_name string, key_value string) {
 		}
 		result, err := client.CreateItem(newItem, vaultName)
 		exitOnError(err)
-		fmt.Println("op_write: created " + result.Title)
+		fmt.Println("opw: created " + result.Title)
 	}
-	return
 }
 
 func fetchPipe() string {
@@ -89,19 +94,6 @@ func fetchPipe() string {
 		key_value = string(v)
 	}
 	return key_value
-}
-
-func findItemField(item_name string, field_name string) (*onepassword.Item) {
-	item, err := client.GetItemByTitle(item_name, vaultId)
-	if err == nil {
-		for _, field := range item.Fields {
-			if field.Label == field_name {
-				return item
-			}
-		}
-	} 
-	exitOnError(err)
-	return nil
 }
 
 func createClient() (connect.Client) {

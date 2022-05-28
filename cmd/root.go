@@ -13,7 +13,7 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "op_write",
+	Use:   "opw",
 	Short: "1password-connect writer",
 	Long:  `twdps labs command line tool for creating and updating secrets via the 1password secrets automation connect server.`,
 	// Uncomment the following line if your bare application
@@ -43,7 +43,7 @@ func init() {
 // Config file definitions
 // Default values from settings.go
 func initConfig() {
-	
+
 	viper.SetEnvPrefix(ConfigEnvDefault)
 	viper.AutomaticEnv()
 

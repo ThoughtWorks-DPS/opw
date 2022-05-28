@@ -1,0 +1,26 @@
+---
+version: 2.1
+
+on-push-main: &on-push-main
+  branches:
+    only: /main/
+  tags:
+    ignore: /.*/
+
+on-tag-prerelease: &on-tag-prerelease
+  branches:
+    ignore: /.*/
+  tags:
+    only: /^([0-9]+(\.[0-9]+)+)-rc.[0-9]+$/
+
+on-tag-release: &on-tag-release
+  branches:
+    ignore: /.*/
+  tags:
+    only: /^((([0-9]+)\.([0-9]+)\.([0-9]+))?)$/
+
+
+workflows:
+  version: 2
+
+  development-build:
