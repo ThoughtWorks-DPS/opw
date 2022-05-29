@@ -23,7 +23,6 @@ var writeCmd = &cobra.Command{
 	DisableAutoGenTag: true,
 	Args:              cobra.ExactValidArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("debug: test write secrets with parameters: " + strings.Join(args,","))
 		writeSecret(args[0], args[1], args[2])
 	},
 }

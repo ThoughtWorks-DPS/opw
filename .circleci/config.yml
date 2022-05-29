@@ -1,29 +1,42 @@
 ---
 version: 2.1
 
+# =================================== global pipeline parameters
+
+parameters:
+  context:
+    description: circleci context for all jobs
+    type: string
+    default: twdps-core-labs-team
+  go-version:
+    description: version for go-builder
+    type: string
+    default: 1.18.2
+
 on-push-main: &on-push-main
   branches:
     only: /main/
   tags:
     ignore: /.*/
 
-on-tag-prerelease: &on-tag-prerelease
-  branches:
-    ignore: /.*/
-  tags:
-    only: /^([0-9]+(\.[0-9]+)+)-rc.[0-9]+$/
-
 on-tag-release: &on-tag-release
   branches:
     ignore: /.*/
   tags:
-    only: /^((([0-9]+)\.([0-9]+)\.([0-9]+))?)$/
+    only:
+      - /^([0-9]+(\.[0-9]+)+)-rc.[0-9]+$/
+      - /^((([0-9]+)\.([0-9]+)\.([0-9]+))?)$/
+
+executors:
+  go-builder:
+    docker:
+      - image: cimg/go:<< pipeline.parameters.go-version >>
+    shell: op run --env-file op.env -- /bin/bash
 
 jobs:
 
   static-analysis:
-    docker:
-      - image: cimg/go:1.18.2
+    executor: go-builder
     steps:
       - checkout
       - setup_remote_docker
@@ -38,9 +51,48 @@ jobs:
             curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2
             golangci-lint run ./...
 
+  release:
+    executor: go-builder
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Use goreleaser to build and publish executables to github packages
+          environment:
+            GORELEASER_CURRENT_TAG: $CIRCLE_TAG
+          command: |
+            curl -sL https://git.io/goreleaser | bash
+            mkdir release-assets && cp dist/*.tar.gz release-assets && cp dist/*.zip release-assets
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/release-assets
+      - run:
+          name: fail to debug pipeline
+          command: exit(1)
+
 workflows:
   version: 2
 
-  development-build:
+  push-commits:
     jobs:
       - static-analysis
+
+  release:
+    jobs:
+      - release:
+          context: << pipeline.parameters.context >>
+          name: publish (pre)release
+          filters: *on-tag-release
+      # - smoke-test-linux:
+      #     requires:
+      #       - publish pre-release
+      #     filters: *on-tag-prerelease
+      # - smoke-test-macos:
+      #     requires:
+      #       - publish pre-release
+      #     filters: *on-tag-prerelease
+      # - smoke-test-win:
+      #     requires:
+      #       - publish pre-release
+      #     filters: *on-tag-prerelease

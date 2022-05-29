@@ -1,0 +1,39 @@
+# This is an example goreleaser.yaml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod download
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    binary: opw
+    ldflags:
+      - -s -w -X lightkeeper/cmd.Version={{.Version}}
+
+archives:
+  - replacements:
+      linux: Linux
+      386: i386
+      amd64: x86_64
+      darwin: macOS
+      windows: Windows
+    format_overrides:
+     - goos: windows
+       format: zip
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+release:
+  prerelease: auto
