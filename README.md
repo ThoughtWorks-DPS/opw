@@ -15,4 +15,14 @@ This utility provides that functionality. Hopefully this is just a stop-gap meas
 
 ## installation
 
-## usage
+## quick-start
+
+passing item field and value on the commandline. Will create the item and/or field if it does not exist, or update the Value if it does exist.  
+```
+$ opw write my-item my-field gagfuye62351j
+```
+
+piping value to opw cli.  
+```
+$ cat filename.txt | opw write my-item my-field -
+```
