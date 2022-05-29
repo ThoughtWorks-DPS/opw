@@ -12,3 +12,7 @@
 The 1password cli (`op`) when used to interact with the 1password connect (secrets automation server), does not yet support writing/updating secret values. While this is apparently on the roadmap, it is a necessity for using 1password as a secrets store for infrastructure and service integration automation.  
 
 This utility provides that functionality. Hopefully this is just a stop-gap measure until they release this in their own tool.  
+
+## installation
+
+## usage
