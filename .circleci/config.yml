@@ -43,6 +43,8 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - op/install-op:
+          os: Ubuntu
       - run:
           name: static code analysis
           command: |
