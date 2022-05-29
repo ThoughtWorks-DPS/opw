@@ -43,8 +43,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - op/install-op:
-          os: Ubuntu
       - run:
           name: static code analysis
           command: |
@@ -63,6 +61,7 @@ jobs:
       - setup_remote_docker
       - op/install-op:
           os: Ubuntu
+      - op/env
       - run:
           name: Use goreleaser to build and publish executables to github packages
           environment:
