@@ -2,7 +2,7 @@
 version: 2.1
 
 orbs:
-  op: twdps/onepasword@dev:latest
+  op: twdps/onepassword@dev:latest
 
 # =================================== global pipeline parameters
 
