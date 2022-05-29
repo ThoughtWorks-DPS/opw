@@ -1,6 +1,9 @@
 ---
 version: 2.1
 
+orbs:
+  op: twdps/onepasword@dev:latest
+
 # =================================== global pipeline parameters
 
 parameters:
@@ -31,7 +34,7 @@ executors:
   go-builder:
     docker:
       - image: cimg/go:<< pipeline.parameters.go-version >>
-    shell: op run --env-file op.env -- /bin/bash
+    # shell: op run --env-file op.env -- /bin/bash
 
 jobs:
 
@@ -56,6 +59,8 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - op/install-op:
+          os: Ubuntu
       - run:
           name: Use goreleaser to build and publish executables to github packages
           environment:
