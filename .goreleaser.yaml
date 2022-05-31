@@ -14,7 +14,11 @@ builds:
     binary: opw
     ldflags:
       - -s -w -X opw/cmd.Version={{.Version}}
-
+signs:
+  - cmd: cosign
+    stdin: '{{ .Env.COSIGN_PWD }}'
+    args: ["sign-blob", "--key=cosign.key", "--output=${signature}", "${artifact}"]
+    artifacts: all
 archives:
   - replacements:
       linux: Linux

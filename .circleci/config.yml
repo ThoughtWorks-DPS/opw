@@ -62,18 +62,68 @@ jobs:
       - op/install-op:
           os: Ubuntu
       - op/env
+      - run: op inject -i cosign.key.env -o cosign.key
+      - run: op inject -i cosign.pub.env -o cosign.pub
       - run:
           name: Use goreleaser to build and publish executables to github packages
           command: |
             curl -sL https://git.io/goreleaser | bash
-            mkdir release-assets && cp dist/*.tar.gz release-assets && cp dist/*.zip release-assets
+            mkdir release-assets && cp dist/*.tar.* release-assets && cp dist/*.zip release-assets
       - persist_to_workspace:
           root: ~/
           paths:
             - project/release-assets
+
+  smoke-test-linux:
+    executor: linux-i386-agent
+    environment:
+      FILENAME: release-assets/opw_${CIRCLE_TAG}_Linux_i386.tar.gz
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
       - run:
-          name: fail to debug pipeline
-          command: exit(1)
+          name: smoketest i386 linux version
+          command: |
+            tar -xvzf ${FILENAME}
+            .opw | grep "twdps labs command line tool"
+            # change the above check to compare the version output with the tag
+            cosign verify-blob -key cosign.pub -signature "${FILENAME}.sig" ${FILENAME}
+
+  smoke-test-macos:
+    macos:
+      xcode: 12.1.0
+    environment:
+      FILENAME: release-assets/opw_${CIRCLE_TAG}_macOS_x86_64.tar.gz
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: smoketest MacOS linux version
+          command: |
+            tar -xvzf ${FILENAME}
+            .opw | grep "twdps labs command line tool"
+            # change the above check to compare the version output with the tag
+            cosign verify-blob -key cosign.pub -signature "${FILENAME}.sig" ${FILENAME}
+
+  smoke-test-win:
+    executor:
+      name: win/default
+      shell: powershell.exe
+      nvironment:
+      FILENAME: release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip
+    steps:
+      - checkout
+      - attach_workspace:
+            at: ~/
+      - run:
+          name: smoke test windows version
+          command: |
+            unzip release-assets/${FILENAME}
+            .opw | grep "twdps labs command line tool"
+            # change the above check to compare the version output with the tag
+            cosign verify-blob -key cosign.pub -signature "${FILENAME}.sig" ${FILENAME}
 
 workflows:
   version: 2
@@ -89,15 +139,15 @@ workflows:
           name: publish (pre)release
           filters: *on-tag-release
 
-      # - smoke-test-linux:
-      #     requires:
-      #       - publish pre-release
-      #     filters: *on-tag-prerelease
-      # - smoke-test-macos:
-      #     requires:
-      #       - publish pre-release
-      #     filters: *on-tag-prerelease
-      # - smoke-test-win:
-      #     requires:
-      #       - publish pre-release
-      #     filters: *on-tag-prerelease
+      - smoke-test-linux:
+          requires:
+            - release
+          filters: *on-tag-release
+      - smoke-test-macos:
+          requires:
+            - release
+          filters: *on-tag-release
+      - smoke-test-win:
+          requires:
+            - release
+          filters: *on-tag-release
