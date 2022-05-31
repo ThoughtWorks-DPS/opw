@@ -87,8 +87,6 @@ jobs:
 
   smoke-test-linux:
     executor: linux-i386-agent
-    environment:
-      FILENAME: release-assets/opw_${CIRCLE_TAG}_Linux_i386.tar.gz
     steps:
       - checkout
       - attach_workspace:
@@ -96,16 +94,13 @@ jobs:
       - run:
           name: smoketest i386 linux version
           command: |
-            tar -xvzf ${FILENAME}
-            .opw | grep "twdps labs command line tool"
-            # change the above check to compare the version output with the tag
-            cosign verify-blob -key cosign.pub -signature "${FILENAME}.sig" ${FILENAME}
+            tar -xvzf release-assets/opw_${CIRCLE_TAG}_Linux_i386.tar.gz
+            .opw version | grep ${CIRCLE_TAG}
+            cosign verify-blob -key cosign.pub -signature release-assets/opw_${CIRCLE_TAG}_Linux_i386.tar.gz.sig release-assets/opw_${CIRCLE_TAG}_Linux_i386.tar.gz
 
   smoke-test-macos:
     macos:
       xcode: 12.1.0
-    environment:
-      FILENAME: release-assets/opw_${CIRCLE_TAG}_macOS_x86_64.tar.gz
     steps:
       - checkout
       - attach_workspace:
@@ -113,17 +108,14 @@ jobs:
       - run:
           name: smoketest MacOS linux version
           command: |
-            tar -xvzf ${FILENAME}
-            .opw | grep "twdps labs command line tool"
-            # change the above check to compare the version output with the tag
-            cosign verify-blob -key cosign.pub -signature "${FILENAME}.sig" ${FILENAME}
+            tar -xvzf release-assets/opw_${CIRCLE_TAG}_macOS_x86_64.tar.gz
+            .opw version | grep ${CIRCLE_TAG}
+            cosign verify-blob -key cosign.pub -signature release-assets/opw_${CIRCLE_TAG}_macOS_x86_64.tar.gz.sig release-assets/opw_${CIRCLE_TAG}_macOS_x86_64.tar.gz
 
   smoke-test-win:
     executor:
       name: win/default
       shell: powershell.exe
-    environment:
-      FILENAME: release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip
     steps:
       - checkout
       - attach_workspace:
@@ -131,10 +123,9 @@ jobs:
       - run:
           name: smoke test windows version
           command: |
-            unzip release-assets/${FILENAME}
-            .opw | grep "twdps labs command line tool"
-            # change the above check to compare the version output with the tag
-            cosign verify-blob -key cosign.pub -signature "${FILENAME}.sig" ${FILENAME}
+            unzip release-assets/release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip
+            .opw version | grep ${CIRCLE_TAG}
+            cosign verify-blob -key cosign.pub -signature release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip.sig release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip
 
 workflows:
   version: 2
