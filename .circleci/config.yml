@@ -34,7 +34,10 @@ executors:
   go-builder:
     docker:
       - image: cimg/go:<< pipeline.parameters.go-version >>
-    # shell: op run --env-file op.env -- /bin/bash
+
+  linux-i386-agent:
+    docker:
+      - image: i386/buildpack-deps
 
 jobs:
 
@@ -111,8 +114,8 @@ jobs:
     executor:
       name: win/default
       shell: powershell.exe
-      nvironment:
-      FILENAME: release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip
+      environment:
+        FILENAME: release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip
     steps:
       - checkout
       - attach_workspace:
