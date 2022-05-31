@@ -64,8 +64,6 @@ jobs:
       - op/env
       - run:
           name: Use goreleaser to build and publish executables to github packages
-          environment:
-            GORELEASER_CURRENT_TAG: $CIRCLE_TAG
           command: |
             curl -sL https://git.io/goreleaser | bash
             mkdir release-assets && cp dist/*.tar.gz release-assets && cp dist/*.zip release-assets
