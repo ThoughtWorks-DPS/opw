@@ -58,7 +58,7 @@ jobs:
             curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2
             golangci-lint run ./...
 
-  publish:
+  release:
     executor: go-builder
     steps:
       - checkout
@@ -138,20 +138,20 @@ workflows:
 
   release:
     jobs:
-      - publish:
+      - release:
           context: << pipeline.parameters.context >>
           name: publish (pre)release
           filters: *on-tag-release
 
       - smoke-test-linux:
           requires:
-            - publish
+            - publish (pre)release
           filters: *on-tag-release
       - smoke-test-macos:
           requires:
-            - publish
+            - publish (pre)release
           filters: *on-tag-release
       - smoke-test-win:
           requires:
-            - publish
+            - publish (pre)release
           filters: *on-tag-release
