@@ -3,6 +3,7 @@ version: 2.1
 
 orbs:
   op: twdps/onepassword@dev:latest
+  win: circleci/windows@2.2.0
 
 # =================================== global pipeline parameters
 
