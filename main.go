@@ -1,7 +1,7 @@
 package main
 
-import "op_write/cmd"
+import "opw/cmd"
 
 func main() {
-  cmd.Execute()
+	cmd.Execute()
 }

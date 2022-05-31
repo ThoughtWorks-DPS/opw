@@ -1,4 +1,4 @@
-module op_write
+module opw
 
 go 1.17
 

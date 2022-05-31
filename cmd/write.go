@@ -1,14 +1,15 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
-	"io/ioutil"
-	"bufio"
-	"github.com/spf13/cobra"
+
 	"github.com/1Password/connect-sdk-go/connect"
 	"github.com/1Password/connect-sdk-go/onepassword"
+	"github.com/spf13/cobra"
 )
 
 var vaultName = os.Getenv("OP_CONNECT_VAULT")
@@ -58,15 +59,15 @@ func writeSecret(item_name string, field_name string, key_value string) {
 		exitOnError(err)
 		fmt.Println("opw: updated " + updatedItem.Title)
 
-	// if item does not exist then create it
+		// if item does not exist then create it
 	} else {
 		newItem := &onepassword.Item{
 			Category: onepassword.ApiCredential,
-			Title: item_name,
+			Title:    item_name,
 			Fields: []*onepassword.ItemField{{
 				Label: field_name,
 				Value: key_value,
-				Type: "CONCEALED",
+				Type:  "CONCEALED",
 			}},
 		}
 		result, err := client.CreateItem(newItem, vaultName)
@@ -95,7 +96,7 @@ func fetchPipe() string {
 	return key_value
 }
 
-func createClient() (connect.Client) {
+func createClient() connect.Client {
 	client, err := connect.NewClientFromEnvironment()
 	exitOnError(err)
 	return client

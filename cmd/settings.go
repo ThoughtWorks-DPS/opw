@@ -2,7 +2,6 @@ package cmd
 
 // op_write default settings
 const (
-
 	ConfigEnvDefault             = "OPW"
 	ConfigFileDefaultName        = "config"
 	ConfigFileDefaultType        = "yaml"
