@@ -15,6 +15,8 @@ This utility provides that functionality. Hopefully this is just a stop-gap meas
 
 ## installation
 
+Pre-compiled versions for various systems are available [here](https://github.com/ThoughtWorks-DPS/opw/releases).  
+
 ## quick-start
 
 passing item field and value on the commandline. Will create the item and/or field if it does not exist, or update the Value if it does exist.  
@@ -26,3 +28,7 @@ piping value to opw cli.
 ```
 $ cat filename.txt | opw write my-item my-field -
 ```
+
+#### contributing
+
+current pipeline does not support multiple tags on the same commit.  
