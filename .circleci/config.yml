@@ -68,6 +68,7 @@ jobs:
       - op/env
       - run: op inject -i cosign.key.env -o cosign.key
       - run: op inject -i cosign.pub.env -o cosign.pub
+      - run: echo "cosign.*" >> .gitignore
       - run:
           name: Use goreleaser to build and publish executables to github packages
           command: |
