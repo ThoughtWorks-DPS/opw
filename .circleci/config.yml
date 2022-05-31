@@ -116,7 +116,7 @@ jobs:
   smoke-test-win:
     executor:
       name: win/default
-      shell: powershell.exe
+      shell: bash.exe
     steps:
       - checkout
       - attach_workspace:
@@ -124,7 +124,7 @@ jobs:
       - run:
           name: smoke test windows version
           command: |
-            unzip release-assets/release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip
+            unzip -u release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip
             ./opw version | grep ${CIRCLE_TAG}
 
 workflows:
