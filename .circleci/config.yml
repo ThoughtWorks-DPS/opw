@@ -115,8 +115,8 @@ jobs:
     executor:
       name: win/default
       shell: powershell.exe
-      environment:
-        FILENAME: release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip
+    environment:
+      FILENAME: release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip
     steps:
       - checkout
       - attach_workspace:
