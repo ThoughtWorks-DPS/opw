@@ -95,7 +95,7 @@ jobs:
           name: smoketest i386 linux version
           command: |
             tar -xvzf release-assets/opw_${CIRCLE_TAG}_Linux_i386.tar.gz
-            .opw version | grep ${CIRCLE_TAG}
+            ./opw version | grep ${CIRCLE_TAG}
             cosign verify-blob -key cosign.pub -signature release-assets/opw_${CIRCLE_TAG}_Linux_i386.tar.gz.sig release-assets/opw_${CIRCLE_TAG}_Linux_i386.tar.gz
 
   smoke-test-macos:
@@ -109,7 +109,7 @@ jobs:
           name: smoketest MacOS linux version
           command: |
             tar -xvzf release-assets/opw_${CIRCLE_TAG}_macOS_x86_64.tar.gz
-            .opw version | grep ${CIRCLE_TAG}
+            ./opw version | grep ${CIRCLE_TAG}
             cosign verify-blob -key cosign.pub -signature release-assets/opw_${CIRCLE_TAG}_macOS_x86_64.tar.gz.sig release-assets/opw_${CIRCLE_TAG}_macOS_x86_64.tar.gz
 
   smoke-test-win:
@@ -124,7 +124,7 @@ jobs:
           name: smoke test windows version
           command: |
             unzip release-assets/release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip
-            .opw version | grep ${CIRCLE_TAG}
+            ./opw version | grep ${CIRCLE_TAG}
             cosign verify-blob -key cosign.pub -signature release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip.sig release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip
 
 workflows:
