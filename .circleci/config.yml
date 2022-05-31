@@ -66,9 +66,13 @@ jobs:
       - op/install-op:
           os: Ubuntu
       - op/env
-      - run: op inject -i cosign.key.env -o cosign.key
-      - run: op inject -i cosign.pub.env -o cosign.pub
-      - run: echo "cosign.*" >> .gitignore
+      - run:
+          name: fetch keys for signing
+          command: |
+            echo "op://empc-lab/svc-cosign-private-key/notesPlain" > cosign.key.env
+            echo "op://empc-lab/svc-cosign-public-key/notesPlain" > cosign.pub.env
+            op inject -i cosign.key.env -o cosign.key
+            op inject -i cosign.pub.env -o cosign.pub
       - run:
           name: Use goreleaser to build and publish executables to github packages
           command: |

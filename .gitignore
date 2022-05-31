@@ -1,4 +1,5 @@
 dist/
+cosign.*
 # Binaries for programs and plugins
 *.exe
 *.exe~
