@@ -12,9 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var vaultName string
-var vaultId string
-var client connect.Client
+var vaultName string = os.Getenv("OP_CONNECT_VAULT")
 var singleline bool
 
 var writeCmd = &cobra.Command{
@@ -24,10 +22,7 @@ var writeCmd = &cobra.Command{
 	DisableAutoGenTag: true,
 	Args:              cobra.ExactValidArgs(3),
 	Run: func(cmd *cobra.Command, args []string) {
-		vaultName = os.Getenv("OP_CONNECT_VAULT")
-		vaultId = getVaultId()
-		client = createClient()
-		writeSecret(args[0], args[1], args[2])
+		writeSecret(createClient(), args)
 	},
 }
 
@@ -36,7 +31,12 @@ func init() {
 	rootCmd.AddCommand(writeCmd)
 }
 
-func writeSecret(item_name string, field_name string, key_value string) {
+func writeSecret(client connect.Client, params []string) {
+	var item_name string = params[0]
+	var field_name string = params[1]
+	var key_value string = params[2]
+	var vaultId string = getVaultId(client)
+
 	if key_value == "-" {
 		key_value = fetchPipe()
 	}
@@ -105,7 +105,7 @@ func createClient() connect.Client {
 	return client
 }
 
-func getVaultId() string {
+func getVaultId(client connect.Client) string {
 	vault, err := client.GetVault(vaultName)
 	exitOnError(err)
 	return vault.ID
