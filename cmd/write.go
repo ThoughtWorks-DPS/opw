@@ -56,7 +56,7 @@ func writeSecret(client connect.Client, params []string) {
 		}
 		if !field_exists {
 			// this is a new field, add it
-			item.Fields = append(item.Fields, &onepassword.ItemField{Label: field_name, Value: key_value})
+			item.Fields = append(item.Fields, &onepassword.ItemField{Label: field_name, Value: key_value, Type: "CONCEALED"})
 		}
 		updatedItem, err := client.UpdateItem(item, vaultId)
 		exitOnError(err)
