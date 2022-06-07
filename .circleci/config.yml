@@ -97,7 +97,7 @@ jobs:
       - run:
           name: smoketest i386 linux version
           command: |
-            tar -xvzf release-assets/opw_${CIRCLE_TAG}_Linux_i386.tar.gz
+            tar -xvzf release-assets/opw_Linux_i386.tar.gz
             ./opw version | grep ${CIRCLE_TAG}
 
   smoke-test-macos:
@@ -110,7 +110,7 @@ jobs:
       - run:
           name: smoketest MacOS linux version
           command: |
-            tar -xvzf release-assets/opw_${CIRCLE_TAG}_macOS_x86_64.tar.gz
+            tar -xvzf release-assets/opw_macOS_x86_64.tar.gz
             ./opw version | grep ${CIRCLE_TAG}
 
   smoke-test-win:
@@ -124,7 +124,7 @@ jobs:
       - run:
           name: smoke test windows version
           command: |
-            unzip -u release-assets/opw_${CIRCLE_TAG}_Windows_x86_64.zip
+            unzip -u release-assets/opw_Windows_x86_64.zip
             ./opw version | grep ${CIRCLE_TAG}
 
 workflows:
