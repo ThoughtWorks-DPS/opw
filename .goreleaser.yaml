@@ -19,7 +19,8 @@ signs:
     args: ["sign-blob", "--key=cosign.key", "--output=${signature}", "${artifact}"]
     artifacts: all
 archives:
-  - replacements:
+  - name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    replacements:
       linux: Linux
       386: i386
       amd64: x86_64
