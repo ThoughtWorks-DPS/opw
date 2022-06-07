@@ -82,7 +82,7 @@ jobs:
             mkdir release-assets && cp dist/*.tar.* release-assets && cp dist/*.zip release-assets
       - run:
           name: validate signature
-          command: cosign verify-blob -key cosign.pub -signature release-assets/opw_${CIRCLE_TAG}_Linux_i386.tar.gz.sig release-assets/opw_${CIRCLE_TAG}_Linux_i386.tar.gz
+          command: cosign verify-blob -key cosign.pub -signature release-assets/opw_Linux_i386.tar.gz.sig release-assets/opw_Linux_i386.tar.gz
       - persist_to_workspace:
           root: ~/
           paths:
