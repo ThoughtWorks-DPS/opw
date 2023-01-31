@@ -29,6 +29,8 @@ piping value to opw cli.
 $ cat filename.txt | opw write my-item my-field -
 ```
 
+* Public key available at https://keybase.io/twdps for signing verfication  
+
 #### contributing
 
-current pipeline does not support multiple tags on the same commit.  
+* Current pipeline does not support multiple tags on the same commit.  
