@@ -3,7 +3,7 @@ package cmd
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"strings"
 
@@ -20,7 +20,7 @@ var writeCmd = &cobra.Command{
 	Short:             "write secret to 1password connect server",
 	Long:              `write secret to 1password connect server`,
 	DisableAutoGenTag: true,
-	Args:              cobra.ExactValidArgs(3),
+	Args:              cobra.MatchAll(cobra.ExactArgs(3), cobra.OnlyValidArgs),
 	Run: func(cmd *cobra.Command, args []string) {
 		writeSecret(createClient(), args)
 	},
@@ -90,7 +90,7 @@ func fetchPipe() string {
 		}
 		key_value = strings.TrimSuffix(v, "\n")
 	} else {
-		v, err := ioutil.ReadAll(os.Stdin)
+		v, err := io.ReadAll(os.Stdin)
 		if err != nil {
 			exitOnError(err)
 		}
