@@ -27,9 +27,7 @@ $ opw write my-item my-field gagfuye62351j
 piping value to opw cli.  
 ```
 $ cat filename.txt | opw write my-item my-field -
-```
-
-* Public key available at https://keybase.io/twdps for signing verfication  
+``
 
 #### contributing
 
