@@ -8,9 +8,9 @@
   <a href="https://app.circleci.com/pipelines/github/ThoughtWorks-DPS/opw"><img src="https://circleci.com/gh/ThoughtWorks-DPS/opw.svg?style=shield"></a> <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
 </div>
 <br />
----
+<hr>
 **DEPREACTED**: Since this tool was created, the 1password cli supports Writes to Connect or op Cloud endpoints. The opw cli is no longer supported going forward.  
----
+<hr>
 
 The 1password cli (`op`) when used to interact with the 1password connect (secrets automation server), does not yet support writing/updating secret values. While this is apparently on the roadmap, it is a necessity for using 1password as a secrets store for infrastructure and service integration automation.  
 
