@@ -5,7 +5,7 @@
 		<img alt="DPS Title" src="https://raw.githubusercontent.com/ThoughtWorks-DPS/static/master/EMPCPlatformStarterKitsImage.png?sanitize=true" width=350/>
 	</p>
   <h3>opw - 1password connect server cli</h3>
-  <a href="https://app.circleci.com/pipelines/github/ThoughtWorks-DPS/opw"><img src="https://circleci.com/gh/ThoughtWorks-DPS/opw.svg?style=shield"></a> <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
 </div>
 <br />
 <hr>
